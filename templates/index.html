@@ -5,68 +5,94 @@
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <link rel="stylesheet" href="https://bootswatch.com/5/cyborg/bootstrap.min.css"/>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: black;
-        }
-
-        #chart-container 
-        {
-            width: 80%;
-            margin: 0 auto;
-            background-color: #fff;
-            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.2);
-        }
-
-        #chart {
-            height: 1000px;
-        }
-
-        h1 {
-            text-align: center;
-            margin-top: 50px;
-        }
-
-        #form-container {
-            width: 80.75%;
-            margin-top: 50px;
-            margin-left:181px;
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.2);
-        }
-
-        .form-label {
-            font-weight: bold;
-        }
-
-        .form-input {
-            margin-bottom: 10px;
-            padding: 5px;
-            width: 100%;
-        }
-
-        .form-submit {
-            margin-top: 10px;
-            padding: 5px 10px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        
+        body{font-family: Arial, sans-serif;background-color: black;}
+        #chart-container{border-radius: 20px;width: 80%;margin: 0 auto;background-color: #fff;box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.2);padding:20px;}
+        #chart{height: 800px;}
+        h1{text-align: center;margin-top: 50px;}
+        #form-container{border-radius: 20px;width: 80%;margin: 0 auto;background-color: #fff;box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.2);padding: 20px;}
+        .form-label={font-weight: bold;}
+        .form-input {margin-bottom: 10px;padding: 5px;width: 100%;}
+        .form-submit{margin-top: 10px;padding: 5px 10px;background-color: #007bff;color: #fff;border: none;border-radius: 5px;cursor: pointer;}
     </style>
 </head>
 <body>
-<h1>BITCOIN Chart</h1>
-<div id="chart-container">
-    <div id="chart"></div>
-    <script>
-        var chartData = {{ graphJSON|safe }};
-        Plotly.newPlot('chart', chartData.data, chartData.layout);
-    </script>
-</div>
+<h1>BITCOIN</h1>
+<div id="chart-container"><div id="chart"></div></div>
+<script>
+    fetch('/get_data')
+        .then(response => response.json())
+        .then(data => {
+            // Extract data from API response
+            var x = [];
+            var open_values = [];
+            var high_values = [];
+            var low_values = [];
+            var close_values = [];
+            for (var i = 0; i < data.length; i++) {
+                x.push(new Date(data[i][0]));
+                open_values.push(data[i][1]);
+                high_values.push(data[i][2]);
+                low_values.push(data[i][3]);
+                close_values.push(data[i][4]);
+            }
+            // Create candlestick chart
+            var candlestick = {
+                x: x,
+                open: open_values,
+                high: high_values,
+                low: low_values,
+                close: close_values,
+                type: 'candlestick',
+                name: 'BTCUSDT'
+            };
+            var data = [candlestick];
+            var layout = {
+                title: 'BITCOIN Chart'
+            };
+            // Update chart
+            Plotly.newPlot('chart', data, layout);
+        })
+        .catch(error => console.error(error));
+    function updateChart() {
+        // Make API request
+        fetch('/get_data')
+            .then(response => response.json())
+            .then(data => {
+                // Extract data from API response
+                var x = [];
+                var open_values = [];
+                var high_values = [];
+                var low_values = [];
+                var close_values = [];
+                for (var i = 0; i < data.length; i++) {
+                    x.push(new Date(data[i][0]));
+                    open_values.push(data[i][1]);
+                    high_values.push(data[i][2]);
+                    low_values.push(data[i][3]);
+                    close_values.push(data[i][4]);
+                }
+                // Create candlestick chart
+                var candlestick = {
+                    x: x,
+                    open: open_values,
+                    high: high_values,
+                    low: low_values,
+                    close: close_values,
+                    type: 'candlestick',
+                    name: 'BTCUSDT'
+                };
+                var data = [candlestick];
+                var layout = {
+                    title: 'BITCOIN Chart'
+                };
+                // Update chart
+                Plotly.newPlot('chart', data, layout);
+            })
+            .catch(error => console.error(error));
+    }
+    // Update chart every 15 seconds
+    setInterval(updateChart, 15000);
+</script>
 <div id="form-container">
     <form method="POST">
         <div class="form-group">
