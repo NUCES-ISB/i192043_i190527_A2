@@ -1,31 +1,103 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Candlestick Chart</title>
+    <title>BITCOIN</title>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <link rel="stylesheet" href="https://bootswatch.com/5/cyborg/bootstrap.min.css"/>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f2f2f2;
+            background-color: black;
         }
-        #chart {
+
+        #chart-container 
+        {
             width: 80%;
             margin: 0 auto;
             background-color: #fff;
-            box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.2);
         }
+
+        #chart {
+            height: 1000px;
+        }
+
         h1 {
             text-align: center;
             margin-top: 50px;
         }
+
+        #form-container {
+            width: 80.75%;
+            margin-top: 50px;
+            margin-left:181px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.2);
+        }
+
+        .form-label {
+            font-weight: bold;
+        }
+
+        .form-input {
+            margin-bottom: 10px;
+            padding: 5px;
+            width: 100%;
+        }
+
+        .form-submit {
+            margin-top: 10px;
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
     </style>
 </head>
 <body>
-    <h1>Candlestick Chart</h1>
+<h1>BITCOIN Chart</h1>
+<div id="chart-container">
     <div id="chart"></div>
     <script>
         var chartData = {{ graphJSON|safe }};
         Plotly.newPlot('chart', chartData.data, chartData.layout);
     </script>
+</div>
+<div id="form-container">
+    <form method="POST">
+        <div class="form-group">
+            <label for="date" class="form-label" style="color:black">Date:</label>
+            <input type="date" id="date" name="date" class="form-input" required>
+        </div>
+        <div class="form-group">
+            <label for="open" class="form-label" style="color:black">Open:</label>
+            <input type="number" step="0.0001" id="open" name="open" class="form-input" required>
+        </div>
+        <div class="form-group">
+            <label for="high" class="form-label" style="color:black">High:</label>
+            <input type="number" step="0.0001" id="high" name="high" class="form-input" required>
+        </div>
+        <div class="form-group">
+            <label for="low" class="form-label" style="color:black">Low:</label>
+            <input type="number" step="0.0001" id="low" name="low" class="form-input" required>
+        </div>
+        <div class="form-group">
+            <label for="close" class="form-label" style="color:black">Close:</label>
+            <input type="number" step="0.0001" id="close" name="close" class="form-input" required>
+        </div>
+        <button type="submit" class="form-submit" >Submit</button>
+    </form>
+</div>
+<div id="form-container">
+    <form>
+        <div class="form-group">
+            <label for="prediction" class="form-label" style="color:black">Prediction:</label>
+        </div>
+    </form>
+</div>
 </body>
 </html>

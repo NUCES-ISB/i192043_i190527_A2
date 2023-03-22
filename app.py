@@ -4,11 +4,11 @@ import requests
 import plotly.graph_objs as go
 import plotly.express as px
 import plotly
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
     # Get historical price data from Binance API
     symbol = 'BTCUSDT'
@@ -36,6 +36,16 @@ def index():
     data = [candlestick]
     layout = go.Layout(title=symbol)
     fig = go.Figure(data=data, layout=layout)
+
+    # Handle form submission
+    if request.method == 'POST':
+        date = request.form['date']
+        open_price = request.form['open']
+        high_price = request.form['high']
+        low_price = request.form['low']
+        close_price = request.form['close']
+        # Do something with the form data, e.g. store it in a database
+        # print(f"{date},{open_price},{high_price},{low_price},{close_price}")
 
     # Convert chart to JSON and render template
     graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
