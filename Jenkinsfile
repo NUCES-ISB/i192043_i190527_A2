@@ -28,9 +28,9 @@ pipeline {
         }
         stage('Run') {
             steps {
-                sh 'docker stop btc-pricepredictor || true'
-                sh 'docker rm btc-pricepredictor || true'
-                sh 'docker run -d --name btc-pricepredictor -p 5000:5000 nasirabdullahsyed/btc-pricepredictor:latest'
+                bat 'docker stop btc-pricepredictor'
+                bat 'docker rm btc-pricepredictor'
+                bat 'docker run -d --name btc-pricepredictor -p 5000:5000 nasirabdullahsyed/btc-pricepredictor:latest'
             }
         }
     }
