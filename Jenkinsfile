@@ -28,9 +28,9 @@ pipeline {
         }
         stage('Run') {
             steps {
-                sh 'docker stop btc-prediction || true'
-                sh 'docker rm btc-prediction || true'
-                sh 'docker run -d --name btc-prediction -p 5000:5000 hunaid2000/btc-prediction:latest'
+                bat '''docker stop btc-prediction || true
+docker rm btc-prediction || true
+docker run -d --name btc-prediction -p 5000:5000 hunaid2000/btc-prediction:latest'''
             }
         }
     }
